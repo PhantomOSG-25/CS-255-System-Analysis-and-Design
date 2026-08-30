@@ -1,0 +1,32 @@
+digraph DriverPassDomain {
+  graph [rankdir=LR, bgcolor="white", pad="0.35", nodesep="0.45", ranksep="0.72", splines=ortho, fontname="Arial", label="DriverPass domain model", labelloc=t, fontsize=24];
+  node [shape=record, style="filled", fillcolor="#F8F9FA", color="#6B7280", fontname="Arial", fontsize=10, margin="0.10,0.08"];
+  edge [color="#64748B", arrowsize=0.65, fontname="Arial", fontsize=9, dir=none];
+
+  User [label="{User|userId\lname\lcontact details\lstatus\l}", fillcolor="#DCEEFF", color="#3D8DFF"];
+  Role [label="{Role|roleId\lname\lpermissions\l}"];
+  Package [label="{TrainingPackage|packageId\lname\lprice\lstatus\l}"];
+  Order [label="{Order|orderId\lcustomerId\lstatus\ltotal\l}"];
+  Payment [label="{PaymentRecord|providerReference\lstatus\lamount\ltimestamps\l}"];
+  Entitlement [label="{Entitlement|entitlementId\lpackageId\lstatus\l}"];
+  Appointment [label="{Appointment|appointmentId\lstart and end\lstatus\lpickup location\l}", fillcolor="#E9F8EF", color="#2E8B57"];
+  Vehicle [label="{Vehicle|vehicleId\lstatus\lavailability\l}"];
+  Assessment [label="{Assessment|assessmentId\ltitle\lversion\l}"];
+  Attempt [label="{AssessmentAttempt|attemptId\lscore\lstatus\lcompletedAt\l}"];
+  Feedback [label="{LessonFeedback|feedbackId\lappointmentId\lnotes\lcreatedAt\l}"];
+  Audit [label="{AuditEvent|actorId\laction\ltarget\loutcome\ltimestamp\l}"];
+
+  User -> Role [label="many-to-many"];
+  User -> Order [label="customer places"];
+  Order -> Package [label="contains"];
+  Order -> Payment [label="has 0..1"];
+  Order -> Entitlement [label="creates"];
+  Entitlement -> Package [label="grants access to"];
+  User -> Appointment [label="customer books"];
+  User -> Appointment [label="instructor assigned", constraint=false];
+  Appointment -> Vehicle [label="uses"];
+  User -> Attempt [label="completes"];
+  Attempt -> Assessment [label="for"];
+  Appointment -> Feedback [label="has 0..1"];
+  User -> Audit [label="actor"];
+}
