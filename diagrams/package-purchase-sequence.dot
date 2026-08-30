@@ -1,0 +1,19 @@
+digraph PurchaseSequence {
+  graph [rankdir=TB, bgcolor="white", pad="0.35", nodesep="0.45", ranksep="0.38", splines=ortho, fontname="Arial", label="Package purchase sequence", labelloc=t, fontsize=24];
+  node [shape=box, style="rounded,filled", fillcolor="#F4F5F7", color="#6B7280", fontname="Arial", fontsize=11, margin="0.12,0.08"];
+  edge [color="#64748B", arrowsize=0.65, fontname="Arial", fontsize=9];
+
+  subgraph cluster_customer { label="Customer"; color="#B8BCC4"; style="rounded"; c1 [label="1. Select package"]; c2 [label="4. Enter payment in\nprovider-hosted fields"]; c3 [label="9. Receive confirmation"]; }
+  subgraph cluster_web { label="Web client"; color="#B8BCC4"; style="rounded"; w1 [label="2. Request checkout"]; w2 [label="8. Display result"]; }
+  subgraph cluster_app { label="DriverPass services"; color="#3D8DFF"; penwidth=1.5; style="rounded"; a1 [label="3. Create pending order\nand idempotency key"]; a2 [label="6. Validate signed callback\nand payment state"]; a3 [label="7. Activate entitlement\nand audit purchase", fillcolor="#E9F8EF", color="#2E8B57"]; }
+  subgraph cluster_pay { label="Payment provider"; color="#D08A00"; style="rounded"; p1 [label="5. Authorize payment\nand return status", fillcolor="#FFF7E6", color="#D08A00"]; }
+
+  c1 -> w1 [label="package ID"];
+  w1 -> a1 [label="authenticated request"];
+  a1 -> c2 [label="checkout token"];
+  c2 -> p1 [label="card data stays\nwith provider"];
+  p1 -> a2 [label="signed callback"];
+  a2 -> a3 [label="approved and not\npreviously processed"];
+  a3 -> w2 [label="order and entitlement"];
+  w2 -> c3 [label="receipt and access"];
+}
