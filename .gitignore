@@ -1,0 +1,7 @@
+# Local QA and build tooling
+build/
+*.inspect.ndjson
+
+# Office and editor temporary files
+~$*
+.DS_Store

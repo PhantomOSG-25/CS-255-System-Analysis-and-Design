@@ -1,0 +1,48 @@
+digraph DriverPassContext {
+  graph [rankdir=LR, bgcolor="white", pad="0.35", nodesep="0.35", ranksep="0.85", splines=ortho, fontname="Arial", label="DriverPass system context and primary use cases", labelloc=t, fontsize=24];
+  node [shape=box, style="rounded,filled", fillcolor="#F4F5F7", color="#6B7280", fontname="Arial", fontsize=12, margin="0.14,0.10"];
+  edge [color="#64748B", arrowsize=0.7, fontname="Arial", fontsize=10];
+
+  customer [label="Customer", fillcolor="#DCEEFF", color="#3D8DFF"];
+  instructor [label="Instructor"];
+  office [label="Office staff"];
+  admin [label="IT administrator"];
+  owner [label="Owner"];
+
+  subgraph cluster_driverpass {
+    label="DriverPass platform";
+    color="#3D8DFF";
+    penwidth=1.5;
+    style="rounded";
+    account [label="Manage account\nand access"];
+    catalog [label="Browse and purchase\ntraining packages"];
+    schedule [label="Schedule and manage\ndriving lessons"];
+    learning [label="Complete courses\nand practice tests"];
+    feedback [label="Record lesson\nfeedback"];
+    reporting [label="Review operations\nand reports"];
+    content [label="Review and publish\nDMV content updates"];
+  }
+
+  payment [label="Payment provider", fillcolor="#FFF7E6", color="#D08A00"];
+  dmv [label="DMV content source", fillcolor="#FFF7E6", color="#D08A00"];
+  notify [label="Notification provider", fillcolor="#FFF7E6", color="#D08A00"];
+
+  customer -> account;
+  customer -> catalog;
+  customer -> schedule;
+  customer -> learning;
+  instructor -> account;
+  instructor -> schedule;
+  instructor -> feedback;
+  office -> account;
+  office -> schedule;
+  admin -> account;
+  admin -> content;
+  owner -> reporting;
+  owner -> content;
+
+  catalog -> payment [label="authorize / confirm"];
+  content -> dmv [dir=both, label="retrieve / validate"];
+  schedule -> notify [label="send events"];
+  account -> notify [label="recovery / alerts"];
+}
